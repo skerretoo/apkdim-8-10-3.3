@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="katalog.AddScreen">
+  <StackPanel Margin="10" Spacing="8">
+    <TextBlock Text="Dodaj nową pozycję" FontSize="20" />
+    <TextBlock Text="Tytuł:" />
+    <TextBox Name="TitleBox" Width="400" HorizontalAlignment="Left" />
+    <TextBlock Text="Rok wydania:" />
+    <TextBox Name="YearBox" Width="400" HorizontalAlignment="Left" />
+    <TextBlock Text="Ocena:" />
+    <TextBox Name="RatingBox" Width="400" HorizontalAlignment="Left" />
+    <Button Click="OnSaveClick">Zapisz</Button>
+    <TextBlock Name="MessageText" />
+  </StackPanel>
+</UserControl>

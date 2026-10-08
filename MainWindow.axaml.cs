@@ -8,6 +8,7 @@ public partial class MainWindow : Window
 {
     private readonly ListScreen ListView = new();
     private readonly DetailScreen DetailView = new();
+    private readonly AddScreen AddView = new();
 
     public MainWindow()
     {
@@ -23,6 +24,11 @@ public partial class MainWindow : Window
     private void OnDetailClick(object? sender, RoutedEventArgs e)
     {
         ShowDetail();
+    }
+
+    private void OnAddClick(object? sender, RoutedEventArgs e)
+    {
+        ShowAdd();
     }
 
     private void OnCountClick(object? sender, RoutedEventArgs e)
@@ -50,6 +56,11 @@ public partial class MainWindow : Window
     {
         PassSelectedToDetail();
         ScreenHost.Content = DetailView;
+    }
+
+    private void ShowAdd()
+    {
+        ScreenHost.Content = AddView;
     }
 
     private void PassSelectedToDetail()
