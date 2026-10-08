@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="katalog.ListScreen">
+  <StackPanel Margin="10" Spacing="8">
+    <TextBlock Text="Lista pozycji" FontSize="20" />
+    <ListBox Name="ItemsList" Height="250" />
+    <Button Click="OnRefreshClick">Odśwież listę</Button>
+    <TextBlock Name="StatusText" Text="Wybierz pozycję z listy." />
+  </StackPanel>
+</UserControl>
