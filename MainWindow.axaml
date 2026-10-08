@@ -7,10 +7,12 @@
         Title="Katalog zbioru">
   <StackPanel Margin="10" Spacing="8">
     <TextBlock Text="Katalog własnego zbioru" FontSize="22" />
-    <ContentControl Name="ScreenHost" />
     <StackPanel Orientation="Horizontal" Spacing="8">
+      <Button Click="OnListClick">Lista</Button>
+      <Button Click="OnDetailClick">Szczegóły</Button>
       <Button Click="OnCountClick">Policz</Button>
       <TextBlock Name="CountText" VerticalAlignment="Center" Text="Jeszcze nie policzono." />
     </StackPanel>
+    <ContentControl Name="ScreenHost" />
   </StackPanel>
 </Window>
