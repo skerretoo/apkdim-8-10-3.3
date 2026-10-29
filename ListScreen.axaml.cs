@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -10,7 +9,12 @@ public partial class ListScreen : UserControl
     public ListScreen()
     {
         InitializeComponent();
-        LoadItems();
+        Reload();
+    }
+
+    public void Reload()
+    {
+        ShowLines(DataFile.ReadLines());
     }
 
     public string? GetSelectedLine()
@@ -20,17 +24,7 @@ public partial class ListScreen : UserControl
 
     private void OnRefreshClick(object? sender, RoutedEventArgs e)
     {
-        LoadItems();
-    }
-
-    private void LoadItems()
-    {
-        ShowLines(ReadLines());
-    }
-
-    private List<string> ReadLines()
-    {
-        return new List<string>(File.ReadAllLines("dane/pozycje.txt"));
+        Reload();
     }
 
     private void ShowLines(List<string> lines)
@@ -50,6 +44,11 @@ public partial class ListScreen : UserControl
 
     private void ShowCount(int count)
     {
+        if (count == 0)
+        {
+            StatusText.Text = "Brak pozycji. Dodaj pierwszą na ekranie Dodaj.";
+            return;
+        }
         StatusText.Text = $"Wczytano pozycji: {count}";
     }
 }

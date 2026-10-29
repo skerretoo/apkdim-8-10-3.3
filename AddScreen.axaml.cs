@@ -1,4 +1,3 @@
-using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -21,14 +20,15 @@ public partial class AddScreen : UserControl
         var title = ReadTitle();
         var year = ReadYear();
         var rating = ReadRating();
-        if (!IsValid(title, year, rating))
+        var error = EntryValidator.Validate(title, year, rating);
+        if (error is not null)
         {
-            ShowError("Uzupełnij tytuł, rok i ocenę. W tytule nie używaj średnika.");
+            ShowMessage(error);
             return;
         }
-        AppendLine(BuildLine(title, year, rating));
+        AppendEntry(title, year, rating);
         ClearInputs();
-        ShowSuccess("Zapisano do dane/pozycje.txt");
+        ShowMessage("Zapisano do dane/pozycje.txt");
     }
 
     private string ReadTitle()
@@ -46,34 +46,14 @@ public partial class AddScreen : UserControl
         return RatingBox.Text?.Trim() ?? "";
     }
 
-    private bool IsValid(string title, string year, string rating)
+    private void AppendEntry(string title, string year, string rating)
     {
-        return IsTitleValid(title) && IsYearValid(year) && IsRatingValid(rating);
-    }
-
-    private bool IsTitleValid(string title)
-    {
-        return title.Length > 0 && !title.Contains(';');
-    }
-
-    private bool IsYearValid(string year)
-    {
-        return int.TryParse(year, out var number) && number >= 1800 && number <= 2100;
-    }
-
-    private bool IsRatingValid(string rating)
-    {
-        return rating.Length > 0 && !rating.Contains(';');
+        DataFile.AppendLine(BuildLine(title, year, rating));
     }
 
     private string BuildLine(string title, string year, string rating)
     {
         return $"{title};{year};{rating}";
-    }
-
-    private void AppendLine(string line)
-    {
-        File.AppendAllText("dane/pozycje.txt", line + "\n");
     }
 
     private void ClearInputs()
@@ -83,12 +63,7 @@ public partial class AddScreen : UserControl
         RatingBox.Text = "";
     }
 
-    private void ShowError(string message)
-    {
-        MessageText.Text = message;
-    }
-
-    private void ShowSuccess(string message)
+    private void ShowMessage(string message)
     {
         MessageText.Text = message;
     }

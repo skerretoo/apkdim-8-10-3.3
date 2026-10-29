@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using Avalonia.Controls;
 
 namespace katalog;
@@ -9,7 +8,15 @@ public partial class DetailScreen : UserControl
     public DetailScreen()
     {
         InitializeComponent();
-        LoadPicker();
+        Reload();
+    }
+
+    public void Reload()
+    {
+        var current = PickerBox.SelectedItem as string;
+        var lines = DataFile.ReadLines();
+        FillPicker(lines);
+        SelectLine(lines, current);
     }
 
     public void ShowLine(string line)
@@ -22,17 +29,6 @@ public partial class DetailScreen : UserControl
         ShowSelected();
     }
 
-    private void LoadPicker()
-    {
-        FillPicker(ReadLines());
-        SelectFirst();
-    }
-
-    private List<string> ReadLines()
-    {
-        return new List<string>(File.ReadAllLines("dane/pozycje.txt"));
-    }
-
     private void FillPicker(List<string> lines)
     {
         PickerBox.Items.Clear();
@@ -42,12 +38,20 @@ public partial class DetailScreen : UserControl
         }
     }
 
-    private void SelectFirst()
+    private void SelectLine(List<string> lines, string? wanted)
     {
-        if (PickerBox.Items.Count > 0)
+        var index = wanted is null ? -1 : lines.IndexOf(wanted);
+        if (index < 0)
         {
-            PickerBox.SelectedIndex = 0;
+            index = lines.Count > 0 ? 0 : -1;
         }
+        if (index < 0)
+        {
+            ClearFields();
+            ShowError("Brak pozycji w pliku dane/pozycje.txt.");
+            return;
+        }
+        PickerBox.SelectedIndex = index;
     }
 
     private void ShowSelected()
@@ -55,7 +59,6 @@ public partial class DetailScreen : UserControl
         var line = PickerBox.SelectedItem as string;
         if (line is null)
         {
-            ShowError("Wybierz pozycję z listy.");
             return;
         }
         ShowLine(line);
@@ -82,6 +85,13 @@ public partial class DetailScreen : UserControl
         YearText.Text = year;
         RatingText.Text = rating;
         ErrorText.Text = "";
+    }
+
+    private void ClearFields()
+    {
+        TitleText.Text = "—";
+        YearText.Text = "—";
+        RatingText.Text = "—";
     }
 
     private void ShowError(string message)

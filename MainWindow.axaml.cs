@@ -1,4 +1,3 @@
-using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -6,9 +5,9 @@ namespace katalog;
 
 public partial class MainWindow : Window
 {
-    private readonly ListScreen ListView = new();
-    private readonly DetailScreen DetailView = new();
-    private readonly AddScreen AddView = new();
+    private readonly ListScreen ListScreenView = new();
+    private readonly DetailScreen DetailScreenView = new();
+    private readonly AddScreen AddScreenView = new();
 
     public MainWindow()
     {
@@ -33,13 +32,7 @@ public partial class MainWindow : Window
 
     private void OnCountClick(object? sender, RoutedEventArgs e)
     {
-        CountText.Text = BuildCountText(ReadLineCount());
-    }
-
-    private int ReadLineCount()
-    {
-        var lines = File.ReadAllLines("dane/pozycje.txt");
-        return lines.Length;
+        CountText.Text = BuildCountText(DataFile.CountItems());
     }
 
     private string BuildCountText(int count)
@@ -49,26 +42,28 @@ public partial class MainWindow : Window
 
     private void ShowList()
     {
-        ScreenHost.Content = ListView;
+        ListScreenView.Reload();
+        ScreenHost.Content = ListScreenView;
     }
 
     private void ShowDetail()
     {
+        DetailScreenView.Reload();
         PassSelectedToDetail();
-        ScreenHost.Content = DetailView;
+        ScreenHost.Content = DetailScreenView;
     }
 
     private void ShowAdd()
     {
-        ScreenHost.Content = AddView;
+        ScreenHost.Content = AddScreenView;
     }
 
     private void PassSelectedToDetail()
     {
-        var line = ListView.GetSelectedLine();
+        var line = ListScreenView.GetSelectedLine();
         if (line is not null)
         {
-            DetailView.ShowLine(line);
+            DetailScreenView.ShowLine(line);
         }
     }
 }
